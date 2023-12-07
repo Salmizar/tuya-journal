@@ -1,0 +1,22 @@
+Requirements for Tuya Journal App
+
+Must haves
+ - User settings:
+	- C/F
+	- Default display interval
+	- Configurable main display (default PH)
+ - Sensor Data:
+	- Allow user to configure one or more sensors
+	- Backend server will poll sensor and save data in buffer for one minute, then save average in DB
+ - Display Sensor Data:
+	- Data while being viewed live will be updated in realtime
+	- Data can be viewed in a number of intervals (hour, day, week, month, year, all time)
+ - Journal:
+	- Date auto selected on new, but ability to change it
+	- Display Latest Sensor data
+	- Display list of journal events
+
+Nice to haves
+ - Calendar display Journals
+ - Advanced search of journal data
+ - 
