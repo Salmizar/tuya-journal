@@ -1,0 +1,9 @@
+.check-box-container {
+    padding-left: 10px;
+}
+
+.check-box-label {
+    position: relative;
+    left: 10px;
+    top: -2px;
+}

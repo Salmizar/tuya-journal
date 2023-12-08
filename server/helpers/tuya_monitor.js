@@ -1,15 +1,13 @@
-//const sensors = require('../sensors');
-const sensors = require('../sensors.json');
 const dal = require('../helpers/dal');
 const TuyAPI = require('tuyapi');
 const captureWindow = 1000 * 60;//60 seconds
 var sensor_data = {};
-exports.recordSensors = () => {
+exports.recordSensors = (sensors) => {
     //Connect to PostgreSQL
     dal.connect();
     //Connect to sensor to obtain Data
     Object.keys(sensors).forEach(sensor => {
-        monitorSensorData(sensor, sensors[sensor]);
+        monitorSensorData(sensor, sensors);
     });
 };
 const avgData = (data) => {
@@ -37,10 +35,11 @@ const updateData = (sensor, attribute, value) => {
     //attribute 119 is last refresh event
     if (parseInt(attribute) != 119) {
         sensor_data[sensor][attribute] = parseInt(value) + parseInt(sensor_data[sensor][attribute]);
-    } else if ((Date.now() - sensor_data[sensor].datetime) > captureWindow) {
-        postData(sensor);
     } else {
         sensor_data[sensor].count++;
+        if ((Date.now() - sensor_data[sensor].datetime) > captureWindow) {
+            postData(sensor);
+        }
     }
 }
 const resetSensorData = (sensor, isNew = false) => {
@@ -48,7 +47,7 @@ const resetSensorData = (sensor, isNew = false) => {
         //If new, set datetime to expired, so when data is
         //recieved, data is immedaitely posted
         'datetime': Date.now() - ((isNew) ? captureWindow : 0),
-        'count': ((isNew) ? 1 : 0),
+        'count': 0,
         '8': 0,
         '102': 0,
         '107': 0,
@@ -57,7 +56,7 @@ const resetSensorData = (sensor, isNew = false) => {
         '116': 0
     };
 }
-const monitorSensorData = (sensor) => {
+const monitorSensorData = (sensor, sensors) => {
     resetSensorData(sensor, true);
     const device = new TuyAPI(sensors[sensor]);
     // Find device on network
@@ -65,9 +64,16 @@ const monitorSensorData = (sensor) => {
         device.connect();
     });
     // Add event listeners
-    device.on('connected', () => { /*console.log('Connected to device!');*/ });
-    device.on('disconnected', () => { /*console.log('Disconnected from device.');*/ });
-    device.on('error', error => { /*console.log('Error!', error);*/ });
+    device.on('connected', () => { console.log('Connected to device!'); });
+    device.on('disconnected', () => {
+        console.log('Disconnected from device.');
+        //If disconnected, attempt to reconnect in 1 second
+        setTimeout(() => {
+            console.log('reconnecting');
+            monitorSensorData(sensor);
+        }, 1000);
+    });
+    device.on('error', error => { console.log('Error!', error); });
     device.on('dp-refresh', data => {
         let key = Object.keys(data.dps)[0];
         switch (parseInt(key)) {

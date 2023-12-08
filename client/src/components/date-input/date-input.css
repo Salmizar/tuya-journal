@@ -1,0 +1,125 @@
+.date-input {
+    background-color: #FFF;
+    margin-bottom: 10px;
+    font-size: 18px;
+    white-space: nowrap;
+    position: relative;
+    cursor: pointer;
+}
+
+.date-input-container {
+    position: absolute;
+    left: -5px;
+    z-index: 50;
+    width: 250px;
+    border: 1px solid lightgray;
+    background-color: #FFF;
+    display: none;
+    cursor: default;
+    border-radius: 5px;
+    box-shadow: 3px 4px 8px 0px rgba(0, 0, 0, 0.3);
+}
+
+.date-input-container-visible {
+    display: block;
+}
+
+.date-input-nav {
+    margin: 10px;
+    font-size: 15px;
+}
+
+.date-input-nav-previous {
+    width: 18px;
+    margin-top: 3px;
+    margin-left: 25px;
+    transform: rotate(180deg);
+    float: right;
+}
+
+.date-input-nav-next {
+    width: 18px;
+    margin-top: 3px;
+    margin-left: 5px;
+    float: right;
+}
+
+.date-input-days-of-week-container {
+    height: 20px;
+    text-align: center;
+    display: flex;
+}
+
+.date-input-days-of-week-container div {
+    display: flex;
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: center;
+    font-size: 12px;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.date-input-display-date {
+    padding: 10px;
+    width: 163px;
+    overflow: hidden;
+    border: 1px solid #dcdcdc;
+    cursor: pointer;
+}
+
+.date-input-display-date-disabled {
+    background-color: #f6f6f6;
+    cursor: default;
+}
+
+.date-input-display-date-error {
+    border: 1px solid red;
+    background-color: #ffe6e6;
+}
+
+.date-input-display-date-selected {
+    border: 1px solid;
+}
+
+.date-input-week-container {
+    display: flex;
+    height: 30px;
+    color: #70757a;
+}
+
+.date-input-day-container {
+    display: flex;
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: center;
+    font-size: 12px;
+    overflow: hidden;
+    justify-content: center;
+    padding-top: 5px;
+    cursor: pointer;
+}
+
+.date-input-day {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+}
+
+.date-input-day-container:hover>.date-input-day {
+    background-color: lightgrey;
+    color: #000;
+}
+
+.date-input-selected {
+    background-color: lightblue;
+}
+
+.date-input-day-container:hover>.date-input-today {
+    background-color: lightblue;
+}
+
+.date-input-today {
+    background-color: blue;
+    color: #FFF;
+}

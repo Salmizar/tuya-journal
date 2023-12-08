@@ -1,26 +1,23 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AllSensors from "./containers/all-sensors/all-sensors";
+import ViewSensor from "./containers/view-sensor/view-sensor";
+import Journal from "./containers/journal/journal";
+import Header from "./containers/header/header";
 function App() {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    let domain = window.location.origin.substring(0,String(window.location).lastIndexOf(":"));
-    let port = 3001;
-    fetch(`${domain}:${port}/api`)
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{!data ? "Loading..." : data}</p>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <Routes>
+          <Route path="/" element={<AllSensors />} />
+          <Route path="/sensor/*" element={<ViewSensor />} />
+          <Route path="/journal/*" element={<Journal />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
