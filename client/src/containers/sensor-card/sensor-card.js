@@ -18,11 +18,27 @@ const SensorCard = ({ sensorData, activeSensor }) => {
                 return sensorData[1]/1000;
         }
     }
+    const formatSensorName = () => {
+        switch( sensorData[0]) {
+            case "temp":
+                return "temperature";
+            case "ph":
+                return "PH";
+            case "tds":
+                return "total disolved solids";
+            case "sal":
+                return "salinity";
+            case "ec":
+                return "electrical conductivity";
+            case "sg":
+                return "specific gravity";
+        }
+    }
     const navigateToSensor = () => {
         navigate("/sensor/"+activeSensor.id+"?type="+sensorData[0]);
     };
     return (
-        <div className="card" onClick={navigateToSensor}>
+        <div title={`View historical ${formatSensorName()} data`} className="card" onClick={navigateToSensor}>
             <img className={'card_ico card_ico_'+sensorData[0]} src={'/images/'+sensorData[0]+'.svg'}></img>
             <div className="card_title">
                 {sensorData[0].toUpperCase()}

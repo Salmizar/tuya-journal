@@ -16,7 +16,7 @@ const Loader = styled.div`
   border-radius: 20%;
   position: relative;
   -webkit-animation: spin 2s infinite;
-  animation: spin 2s infinite;
+  animation: spin 2s infinite, fadeIn 0.5s, fadeOut 0.5s;
 
   &:before {
     content: "Loading \ 0.0";
@@ -38,7 +38,14 @@ const Loader = styled.div`
     background: darkgray;
     position: absolute;
   }
-
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+  @keyframes fadeOut {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
   @keyframes spin {
     100% {
       transform: rotate(360deg);

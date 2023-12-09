@@ -1,3 +1,7 @@
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
 .card {
     width: 175px;
     height: 200px;
@@ -8,6 +12,7 @@
     font-size: 30px;
     margin: 20px;
     cursor: pointer;
+    animation: fadeIn 0.5s;
 }
 .card:hover {
     background-color: #F1eeee;
