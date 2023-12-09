@@ -9,3 +9,36 @@
 .sensor_nav button {
     margin-left: 20px;
 }
+.add_icon {
+    width: 42px;
+    height: 42px;
+    background-image: url('../../../public/images/add.svg');
+}
+.add_sensor_list {
+    position:absolute;
+    left: -30px;
+    display: none;
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.add_sensor:hover .add_sensor_list {
+    display: block;
+    z-index: 1;
+    position: absolute;
+}
+.add_sensor_list div {
+    white-space: nowrap;
+    padding: 25px;
+    cursor: pointer;
+    border-top: 1px solid #FFF;
+    background-color: #FFF;
+}
+.add_sensor_list div:hover {
+    background-color: #f0f0f0;
+}
+
+
+.add_sensor {
+    position: relative;
+}

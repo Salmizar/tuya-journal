@@ -4,8 +4,7 @@ import * as Utils from '../../utils';
 import { Button } from "../../components/button/button.style";
 import AllSensors from '../all-sensors/all-sensors';
 import ViewSensor from '../view-sensors/view-sensors';
-import { useParams } from 'react-router-dom';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 const ListSensors = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -55,7 +54,7 @@ const ListSensors = () => {
       {location.pathname.includes('/sensor/') ?
         <ViewSensor></ViewSensor>
         :
-        <AllSensors activeSensor={activeSensor} setLastUpdate={setLastUpdate}></AllSensors>
+        <AllSensors setLastUpdate={setLastUpdate}></AllSensors>
       }
     </main>
   );
