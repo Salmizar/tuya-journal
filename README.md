@@ -9,6 +9,9 @@ context to journal entries. See requirements folder for details.
 ```
 Frontend: React, TailwindCSS
 Backend: Node/Express, PostgreSQL, RESTful API
+
+Recommend using pm2 for backend management. Sensors randomly 'ECONNREFUSED',
+causing app to crash within tuyapi
 ```
 
 # Instructions on adding TuyAPI and obtaining device id and key

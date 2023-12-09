@@ -2,6 +2,7 @@ import React from 'react';
 import './all-sensors.css';
 import * as Utils from '../../utils';
 import SensorCard from '../sensor-card/sensor-card';
+import { LoadingSpinner } from '../../components/loader/loader.style';
 const AllSensors = () => {
   const [sensors, setSensors] = React.useState(null);
   const [lastUpdate, setLastUpdate] = React.useState(null);
@@ -35,7 +36,7 @@ const AllSensors = () => {
       const timer = setInterval(() => {
         updateSensor();
       }, updateInterval);
-      return () => {clearInterval(timer)};
+      return () => { clearInterval(timer) };
     }
   }, [activeSensor]);
   return (
@@ -45,18 +46,21 @@ const AllSensors = () => {
           <button className='active'>{!activeSensor ? 'loading' : activeSensor.name}&nbsp;&nbsp;<b>v</b></button>
           <div className='select_sensor'>
             {sensors && Object.entries(sensors).map((sensor, index) => {
-              return <div className={activeSensor.id===sensor[1].id?'selected':''} onClick={() => {selectSensor(sensor)}} key={sensor[1].id}>{sensor[1].name}</div>
+              return <div className={activeSensor.id === sensor[1].id ? 'selected' : ''} onClick={() => { selectSensor(sensor) }} key={sensor[1].id}>{sensor[1].name}</div>
             })}
           </div>
         </div>
         <div className="last_updated">Last updated: {!lastUpdate ? 'loading' : Utils.Misc.timeSince(lastUpdate)}</div>
       </nav>
       <section>
-        {sensorData && Object.entries(sensorData).map((sensr) => {
-          if (!'sensor_data_id,created_date,sensor_id'.includes(sensr[0])) {
-            return <SensorCard key={sensr[0]} sensorData={sensr} activeSensor={activeSensor}></SensorCard>
-          }
-        })}
+        {!sensorData ?
+          <LoadingSpinner></LoadingSpinner>
+          :
+          Object.entries(sensorData).map((sensr) => {
+            if (!'sensor_data_id,created_date,sensor_id'.includes(sensr[0])) {
+              return <SensorCard key={sensr[0]} sensorData={sensr} activeSensor={activeSensor}></SensorCard>
+            }
+          })}
       </section>
     </main>
   );
