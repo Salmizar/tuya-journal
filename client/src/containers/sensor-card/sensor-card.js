@@ -6,7 +6,7 @@ const SensorCard = ({ sensorData }) => {
     const { sensorId } = useParams();
     const navigate = useNavigate();
     const navigateToSensor = () => {
-        navigate("/sensor/"+sensorId+"?view="+sensorData[0]);
+        navigate("/sensor/"+sensorId+"?&display=hour&view="+sensorData[0]);
     };
     return (
         <div title={`View historical ${Utils.Misc.formatSensorName(sensorData[0])} data`} className="card" onClick={navigateToSensor}>

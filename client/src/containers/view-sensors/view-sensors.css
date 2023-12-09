@@ -1,3 +1,16 @@
+aside {
+    width: 600px;
+    padding: 10px;
+    border-radius: 5px;
+    border:1px solid #CCC;
+}
+section {
+    text-align: center;
+}
+aside button {
+    margin: 10px;
+    margin-top: 0px;
+}
 .view-sensors {
     position: relative;
 }
@@ -41,4 +54,7 @@
 
 .add_sensor {
     position: relative;
+}
+.sensor_chart {
+    padding:30px;
 }
