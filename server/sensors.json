@@ -3,5 +3,10 @@
         "name": "Tomato's PH Meter",
         "id": "eb691e1c2789530901dq2d",
         "key": "n6D}/gbo@[d=I]4m"
+    },
+    "sensor2": {
+        "name": "fake second Sensor",
+        "id": "hp2391e1c2789530901sdM",
+        "key":"h9F}/gbo@[d=I]dM"
     }
 }

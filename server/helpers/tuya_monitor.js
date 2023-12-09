@@ -1,13 +1,19 @@
 const dal = require('../helpers/dal');
 const TuyAPI = require('tuyapi');
-const captureWindow = 1000 * 60;//60 seconds
+const captureWindow = 1000 * 60;
+const reconnectTimeout = 1000 * 30 ;
+var sensors = {};
 var sensor_data = {};
-exports.recordSensors = (sensors) => {
+exports.recordSensors = (sensrs) => {
     //Connect to PostgreSQL
     dal.connect();
     //Connect to sensor to obtain Data
+    sensors = sensrs;
     Object.keys(sensors).forEach(sensor => {
-        monitorSensorData(sensor, sensors);
+        //Ignore fake test device from logging procedure
+        if (sensors[sensor].id != 'hp2391e1c2789530901sdM') {
+            monitorSensorData(sensor);
+        }
     });
 };
 const avgData = (data) => {
@@ -20,15 +26,15 @@ const avgData = (data) => {
     return val;
 }
 const postData = (sensor) => {
-    let query = `SELECT public.insertsensordata(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8));`;
+    let query = `SELECT * from public.insertsensordata(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8));`;
     let d = avgData(sensor_data[sensor]);
     let ts = new Date(d.datetime);
-    timestamp = ts.getFullYear() + '-' + ts.getMonth() + '-' + ts.getDate()
+    timestamp = ts.getFullYear() + '-' + (ts.getMonth()+1) + '-' + ts.getDate()
     timestamp += ' ' + ts.getHours() + ':' + ts.getMinutes() + ':' + ts.getSeconds();
-    let values = [timestamp, sensor, d['8'], d['102'], d['107'], d['110'], d['113'], d['116']];
-    dal.query(query, values).then((newRow) => {
-        console.log('newRow inserted!', newRow.rows);
-    })
+    let values = [timestamp, sensors[sensor].id, d['8'], d['102'], d['107'], d['110'], d['113'], d['116']];
+    dal.query(query, values).then((data) => {
+        console.log(`New Record inserted for sensor: ${sensors[sensor].id}`);
+    });
     resetSensorData(sensor);
 }
 const updateData = (sensor, attribute, value) => {
@@ -46,6 +52,7 @@ const resetSensorData = (sensor, isNew = false) => {
     sensor_data[sensor] = {
         //If new, set datetime to expired, so when data is
         //recieved, data is immedaitely posted
+        reconnectTimer: 0,
         'datetime': Date.now() - ((isNew) ? captureWindow : 0),
         'count': 0,
         '8': 0,
@@ -56,22 +63,32 @@ const resetSensorData = (sensor, isNew = false) => {
         '116': 0
     };
 }
-const monitorSensorData = (sensor, sensors) => {
+const reconnectTimer = (sensor) => {
+    //Add a reconnection method, so it the connection times out, it'll retry
+    console.log('reconnectTimer');
+    sensor_data[sensor].reconnectTimer = setTimeout(() => {
+        console.log('Connection timed out, reconnecting');
+        monitorSensorData(sensor);
+    }, reconnectTimeout);
+}
+const monitorSensorData = (sensor) => {
     resetSensorData(sensor, true);
     const device = new TuyAPI(sensors[sensor]);
-    // Find device on network
+    //Find device on network
+    console.log('attempting to find sensor:', sensor);
     device.find().then(() => {
+        console.log('Device found, attempting to connect to:', sensor);
         device.connect();
     });
-    // Add event listeners
-    device.on('connected', () => { console.log('Connected to device!'); });
+    //Add event listeners
+    device.on('connected', () => { 
+        clearInterval(sensor_data[sensor].reconnectTimer);
+        console.log('Connected to device!');
+    });
     device.on('disconnected', () => {
         console.log('Disconnected from device.');
-        //If disconnected, attempt to reconnect in 1 second
-        setTimeout(() => {
-            console.log('reconnecting');
-            monitorSensorData(sensor);
-        }, 1000);
+        //Reconnect on disconnect
+        reconnectTimer(sensor);
     });
     device.on('error', error => { console.log('Error!', error); });
     device.on('dp-refresh', data => {
@@ -95,9 +112,5 @@ const monitorSensorData = (sensor, sensors) => {
             });
         }
     });
-    // Disconnect
-    /*setTimeout(() => {
-        device.disconnect();
-        postData(sensor);
-    }, 25000);*/
+    reconnectTimer(sensor);
 };

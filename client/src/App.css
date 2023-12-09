@@ -4,7 +4,7 @@
 
 header {
   padding: 10px;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #CCC;
 }
 header button {
   margin-left: 5px;
@@ -13,19 +13,27 @@ header button {
 main {
   padding: 15px;
 }
+section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-auto-rows: 250px;
+  grid-gap: 5px;
+  margin-right: 25px;
+
+}
 button {
   background-color: #ececec;
-  padding: 3px;
-  border: 1px solid #676767;
+  padding: 10px 25px 10px 25px;
+  border: 1px solid #d0d0d0;
   min-width: 100px;
   border-radius: 5px;
+  font-size: 20px;
 }
 button:hover {
   background-color: #dde1fa;
 }
 .active {
   color: #FFF;
-  cursor: default;
   background-color: #8597ff;
 }
 .active:hover {
