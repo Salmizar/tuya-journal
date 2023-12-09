@@ -1,8 +1,7 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import AllSensors from "./containers/all-sensors/all-sensors";
-import ViewSensor from "./containers/view-sensor/view-sensor";
+import ListSensors from "./containers/list-sensors/list-sensors";
 import Journal from "./containers/journal/journal";
 import Header from "./containers/header/header";
 function App() {
@@ -11,8 +10,9 @@ function App() {
       <div className="App">
         <Header />
         <Routes>
-          <Route path="/" element={<AllSensors />} />
-          <Route path="/sensor/*" element={<ViewSensor />} />
+          <Route path="/" element={<ListSensors />} />
+          <Route path="/:sensorId" element={<ListSensors />} />
+          <Route path="/sensor/:sensorId/" element={<ListSensors />} />
           <Route path="/journal/*" element={<Journal />} />
         </Routes>
       </div>

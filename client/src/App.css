@@ -21,21 +21,3 @@ section {
   margin-right: 25px;
 
 }
-button {
-  background-color: #ececec;
-  padding: 10px 25px 10px 25px;
-  border: 1px solid #d0d0d0;
-  min-width: 100px;
-  border-radius: 5px;
-  font-size: 20px;
-}
-button:hover {
-  background-color: #dde1fa;
-}
-.active {
-  color: #FFF;
-  background-color: #8597ff;
-}
-.active:hover {
-  background-color: #8597ff;
-}

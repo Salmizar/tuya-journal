@@ -1,0 +1,11 @@
+.view-sensors {
+    position: relative;
+}
+.sensor_nav {
+    position: absolute;
+    top: -80px;
+    left: 270px;
+}
+.sensor_nav button {
+    margin-left: 20px;
+}

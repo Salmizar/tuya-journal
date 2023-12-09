@@ -1,5 +1,6 @@
 import React from 'react'
 import "./header.css";
+import { Button } from "../../components/button/button.style";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const Header = () => {
@@ -9,8 +10,8 @@ const Header = () => {
   const navigateToJournal = () => { navigate("/Journal"); }
   return (
     <header>
-      <button className={!location.pathname.includes("/Journal") ? "active":"disabled"} onClick={navigateToAllSensors}>Sensors</button>
-      <button className={location.pathname.includes("/Journal") ? "active":"disabled"} onClick={navigateToJournal}>Journal</button>
+      <Button theme={!location.pathname.includes("/Journal") ? "blue" : "blue_inactive"} onClick={navigateToAllSensors}>Sensors</Button>
+      <Button theme={location.pathname.includes("/Journal") ? "blue" : "blue_inactive"} onClick={navigateToJournal}>Sensors</Button>
     </header>
   )
 }

@@ -35,7 +35,7 @@ const SensorCard = ({ sensorData, activeSensor }) => {
         }
     }
     const navigateToSensor = () => {
-        navigate("/sensor/"+activeSensor.id+"?type="+sensorData[0]);
+        navigate("/sensor/"+activeSensor.id+"?view="+sensorData[0]);
     };
     return (
         <div title={`View historical ${formatSensorName()} data`} className="card" onClick={navigateToSensor}>
