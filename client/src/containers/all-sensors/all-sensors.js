@@ -32,8 +32,9 @@ const AllSensors = ({ setLastUpdate }) => {
                 Object.entries(sensorData).map((sensr) => {
                     if (!'sensor_data_id,created_date,sensor_id'.includes(sensr[0])) {
                         return <SensorCard key={sensr[0]} sensorData={sensr}></SensorCard>
+                    } else {
+                        return null;
                     }
-                    return ''
                 })}
         </section>
     )

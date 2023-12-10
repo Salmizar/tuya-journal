@@ -1,4 +1,4 @@
-export const one =  {
+export const one = {
     second: 1000,
     minute: 1000 * 60,
     hour: 1000 * 60 * 60,
@@ -22,21 +22,20 @@ export const timeSince = (milliseconds) => {
         return 'Now';
     }
 };
-export const formatSensorData = (sensorData) => {
+export const formatSensorData = (sensorData, addDescrptor=true) => {
     switch( sensorData[0]) {
         case "temp":
-            return sensorData[1]/10+'°C';
+            return sensorData[1]/10+((addDescrptor)?'°C':'');
         case "ph":
             return sensorData[1]/100;
         case "tds":
         case "sal":
-            return sensorData[1]+' PPM';
+            return sensorData[1]+((addDescrptor)?' PPM':'');
         case "ec":
-            return sensorData[1]+' US';
-        case "sg":
+            return sensorData[1]+((addDescrptor)?' US':'');
+        default://"sg"
             return sensorData[1]/1000;
     }
-    return sensorData
 }
 export const formatProperSensorName = (sensorData) => {
     switch( sensorData) {
@@ -50,7 +49,7 @@ export const formatProperSensorName = (sensorData) => {
             return "Salinity";
         case "ec":
             return "Electrical Conductivity";
-        case "sg":
+        default://"sg"
             return "Specific Gravity";
     }
 }
@@ -66,7 +65,7 @@ export const formatSensorName = (sensorData) => {
             return "salinity";
         case "ec":
             return "electrical conductivity";
-        case "sg":
+        default://"sg"
             return "specific gravity";
     }
 }

@@ -5,6 +5,7 @@ import { Button } from "../../components/button/button.style";
 import AllSensors from '../all-sensors/all-sensors';
 import ViewSensor from '../view-sensors/view-sensors';
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { LoadingSpinner } from '../../components/loader/loader.style';
 const ListSensors = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -15,14 +16,14 @@ const ListSensors = () => {
   const selectSensor = (sensor) => {
     setLastUpdate(null);
     setActiveSensor(sensors[sensor[0]]);
-    navigate("/"+sensor[1].id);
+    navigate("/" + sensor[1].id);
   };
   React.useEffect(() => {
     Utils.Fetcher.fetchJSON('/sensors').then((data) => {
       let foundSensor = false;
-      if (sensorId != undefined) {
+      if (sensorId !== undefined) {
         //they supplied a sensor, make sure its in the list
-        Object.keys(data).map((key) => {
+        Object.keys(data).forEach((key) => {
           if (sensorId === data[key].id) {
             foundSensor = true;
             setActiveSensor(data[key]);
@@ -32,16 +33,16 @@ const ListSensors = () => {
       if (sensorId === undefined || !foundSensor) {
         //First load, or no sensor was found, so auto select the first one
         let firstKey = Object.keys(data)[0];
-        navigate("/"+data[firstKey].id);
+        navigate("/" + data[firstKey].id);
         setActiveSensor(data[firstKey]);
       }
       setSensors(data);
     })
-  }, []);
+  }, [sensorId, navigate]);
   return (
     <main>
       <nav>
-        <div className="selected_sensor">
+        <div className="selected_sensor"> 
           <Button theme="blue">{!activeSensor ? 'loading' : activeSensor.name}&nbsp;&nbsp;<b>v</b></Button>
           <div className='select_sensor'>
             {sensors && Object.entries(sensors).map((sensor, index) => {
@@ -51,10 +52,13 @@ const ListSensors = () => {
         </div>
         <div className="last_updated">Last updated: {!lastUpdate ? 'loading' : Utils.Misc.timeSince(lastUpdate)}</div>
       </nav>
-      {location.pathname.includes('/sensor/') ?
-        <ViewSensor></ViewSensor>
+      {activeSensor ?
+        location.pathname.includes('/sensor/') ?
+          <ViewSensor setLastUpdate={setLastUpdate}></ViewSensor>
+          :
+          <AllSensors setLastUpdate={setLastUpdate}></AllSensors>
         :
-        <AllSensors setLastUpdate={setLastUpdate}></AllSensors>
+        <LoadingSpinner></LoadingSpinner>
       }
     </main>
   );

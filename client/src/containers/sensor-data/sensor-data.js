@@ -4,73 +4,106 @@ import { LoadingSpinner } from '../../components/loader/loader.style';
 import './sensor-data.css';
 import * as Utils from '../../utils';
 import { useParams } from 'react-router-dom';
-const SensorData = () => {
+const SensorData = ({ setLastUpdate }) => {
     const { sensorId } = useParams();
     const params = new URLSearchParams(window.location.search);
     const displayInterval = params.get("display");
-    //var data = [];
+    const sensors = params.get("view");
+    const sensorAxis = {
+        temp: "left",
+        ph: "left",
+        tds: "right",
+        ec: "right",
+        sal: "right",
+        sg: "left"
+    };
     const [data, setData] = React.useState(null);
-    const convertDisplayInterval = () => {
-        switch(displayInterval) {
-            case "year":
-                return Utils.Misc.one.year;
-            case "month":
-                return Utils.Misc.one.month;
-            case "week":
-                return Utils.Misc.one.week;
-            case "day":
-                return Utils.Misc.one.day;
-            case "hour":
-                return Utils.Misc.one.hour;
-        }
-        return 0
-    }
     React.useEffect(() => {
-        let cutOffDate = Date.now() - convertDisplayInterval();
-        console.log(`/sensor/${sensorId}/${cutOffDate}`, displayInterval);
-        console.log(data);
-        Utils.Fetcher.fetchJSON(`/sensor/${sensorId}/${cutOffDate}`).then((results) => {
-            //console.log(`result`,results);
-            let dat = new Array();
-            Object.entries(results).map((entry) => {
-                let dte = new Date(Date.parse(entry[1].created_date));
-                console.log('entry', new Intl.DateTimeFormat('en', { hour: '2-digit', minute:'2-digit' }).format(dte));
-                dat.push({
-                    "name": new Intl.DateTimeFormat('en', { hour: '2-digit', minute:'2-digit' }).format(dte),
-                    "temperature": entry[1].temp,
-                    "PH": entry[1].ph 
+            let cutOffDate = Date.now() - Utils.Misc.one[displayInterval];
+            Utils.Fetcher.fetchJSON(`/sensor/${sensorId}/${cutOffDate}`).then((results) => {
+                let dat = [];
+                Object.entries(results).forEach((entry) => {
+                    let dataPoint = {};
+                    let dteFormat = {};
+                    switch (displayInterval) {
+                        case "hour":
+                            dteFormat = { hour: '2-digit', minute: '2-digit' };
+                            break;
+                        case "day":
+                            dteFormat = { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' };
+                            break;
+                        case "week":
+                        case "month":
+                            dteFormat = { day: '2-digit', month: '2-digit' };
+                            break;
+                        default://"year"
+                            dteFormat = { month: '2-digit', year: '2-digit' };
+                            break;
+                    };
+                    let dte = new Date(Date.parse(entry[1].created_date));
+                    dataPoint.name = new Intl.DateTimeFormat('en', dteFormat).format(dte);
+                    sensors.split(',').forEach((sensor) => {
+                        dataPoint[sensor] = Utils.Misc.formatSensorData([sensor, entry[1][sensor]], false);
+                    });
+                    dat.push(dataPoint);
                 });
+                let lastEventDate = new Date(results[results.length - 1].created_date);
+                let when = Date.now() - lastEventDate.getTime();
+                setLastUpdate(when);
+                setData(dat);
             });
-            //console.log('dat',dat);
-            setData(dat);
-        })
-    }, [sensorId, displayInterval]);
+    }, [setLastUpdate, sensorId, displayInterval, sensors]);
     return (
         <div className='sensor_data'>
-            {false &&
+            {!data ?
                 <LoadingSpinner></LoadingSpinner>
+                :
+                <ResponsiveContainer width="100%" height={400}>
+                    <AreaChart data={data}
+                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                        <defs>
+                            {Object.entries(data[0]).map((dataEntry) => {
+                                if (dataEntry[0] !== 'name') {
+                                    return <linearGradient key={dataEntry} id={'color' + dataEntry[0]} x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%"
+                                            stopColor={Utils.Theme.theme[Utils.Theme.sensorColors[dataEntry[0]]].default}
+                                            stopOpacity={Utils.Theme.sensorColorOpacity[dataEntry[0]]}
+                                        />
+                                        <stop offset="95%"
+                                            stopColor={Utils.Theme.theme[Utils.Theme.sensorColors[dataEntry[0]]].default}
+                                            stopOpacity={0}
+                                        />
+                                    </linearGradient>
+                                } else {
+                                    return null;
+                                }
+                            })
+                            }
+                        </defs>
+                        <XAxis dataKey="name" />
+                        <YAxis yAxisId="left" />
+                        <YAxis yAxisId="right" orientation="right" />
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <Tooltip />
+                        {Object.entries(data[0]).map((dataEntry) => {
+                            if (dataEntry[0] !== 'name') {
+                                return <Area
+                                    key={dataEntry}
+                                    yAxisId={sensorAxis[dataEntry[0]]}
+                                    type="monotone"
+                                    dataKey={dataEntry[0]}
+                                    stroke={Utils.Theme.theme[Utils.Theme.sensorColors[dataEntry[0]]].default}
+                                    fillOpacity={1}
+                                    fill={'url(#color' + dataEntry[0] + ')'}
+                                />
+                            } else {
+                                return null;
+                            }
+                        })
+                        }
+                    </AreaChart>
+                </ResponsiveContainer>
             }
-            <ResponsiveContainer width="100%" height={400}>
-            <AreaChart data={data}
-                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
-                <defs>
-                    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#CF4307" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#CF4307" stopOpacity={0} />
-                    </linearGradient>
-                    <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#96c300" stopOpacity={0.8} />
-                        <stop offset="95%" stopColor="#96c300" stopOpacity={0} />
-                    </linearGradient>
-                </defs>
-                <XAxis dataKey="name" />
-                <YAxis />
-                <CartesianGrid strokeDasharray="3 3" />
-                <Tooltip />
-                <Area type="monotone" dataKey="temperature" stroke="#CF4307" fillOpacity={1} fill="url(#colorUv)" />
-                <Area type="monotone" dataKey="PH" stroke="#96c300" fillOpacity={1} fill="url(#colorPv)" />
-            </AreaChart>
-            </ResponsiveContainer>
         </div>
     )
 }
