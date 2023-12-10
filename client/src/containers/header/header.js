@@ -11,7 +11,7 @@ const Header = () => {
   return (
     <header>
       <Button theme={!location.pathname.includes("/Journal") ? "blue" : "blue_inactive"} onClick={navigateToAllSensors}>Sensors</Button>
-      <Button theme={location.pathname.includes("/Journal") ? "blue" : "blue_inactive"} onClick={navigateToJournal}>Sensors</Button>
+      <Button theme={location.pathname.includes("/Journal") ? "blue" : "blue_inactive"} onClick={navigateToJournal}>Journal</Button>
     </header>
   )
 }

@@ -3,9 +3,6 @@ aside {
     border-radius: 5px;
     border:1px solid #CCC;
 }
-section {
-    text-align: center;
-}
 aside button {
     margin: 10px;
     margin-top: 0px;
@@ -59,4 +56,5 @@ aside button {
 }
 aside {
     height: 500px;
+    text-align:center;
 }

@@ -32,7 +32,6 @@
 }
 .select_sensor .selected {
     background-color: #F0F0F0;
-    cursor: default;
 }
 
 .selected_sensor:hover .select_sensor {
