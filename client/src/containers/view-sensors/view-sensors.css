@@ -14,9 +14,10 @@ aside button {
     position: relative;
 }
 .sensor_nav {
-    position: absolute;
-    top: -80px;
+    position: relative;
+    top: -59px;
     left: 270px;
+    width: calc(100vw - 301px);
 }
 .sensor_nav button {
     margin-left: 20px;

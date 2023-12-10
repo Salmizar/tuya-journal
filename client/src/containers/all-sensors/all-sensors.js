@@ -1,4 +1,5 @@
 import React from 'react'
+import './all-sensors.css';
 import * as Utils from '../../utils';
 import SensorCard from '../sensor-card/sensor-card';
 import { LoadingSpinner } from '../../components/loader/loader.style';
@@ -25,7 +26,7 @@ const AllSensors = ({ setLastUpdate }) => {
         return () => { clearInterval(timer) };
     }, [setLastUpdate, sensorId]);
     return (
-        <section>
+        <section className='all_sensors'>
             {!sensorData || sensorId === undefined ?
                 <LoadingSpinner></LoadingSpinner>
                 :

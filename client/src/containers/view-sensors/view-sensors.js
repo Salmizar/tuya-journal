@@ -35,7 +35,7 @@ const ViewSensor = ({setLastUpdate}) => {
             onClick={() => { removeSensor(sensor); }}
             theme={Utils.Theme.sensorColors[sensor]}>{Utils.Misc.formatProperSensorName(sensor)}</Button>
         })}
-        <div className='add_sensor' style={{ display: 'inline-block' }}>
+        <div className='add_sensor' style={{ display: sensors.length<sensorList.length ? 'inline-block':'none'  }}>
           <button title="Add Sensor" className='add_icon'>-</button>
           <div className='add_sensor_list'>
             {sensorList.map(sensor => {

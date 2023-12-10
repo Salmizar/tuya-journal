@@ -1,5 +1,7 @@
 .last_updated {
     float: right;
+    position: relative;
+    top: -65px;
     font-size: 13px;
 }
 

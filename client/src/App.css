@@ -13,11 +13,3 @@ header button {
 main {
   padding: 15px;
 }
-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  grid-auto-rows: 250px;
-  grid-gap: 5px;
-  margin-right: 25px;
-
-}
