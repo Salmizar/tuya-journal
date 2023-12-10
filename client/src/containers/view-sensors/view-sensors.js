@@ -1,10 +1,9 @@
-import React from 'react';
 import './view-sensors.css';
 import { Button } from "../../components/button/button.style";
 import { useParams } from 'react-router-dom';
 import * as Utils from '../../utils';
 import { useNavigate } from "react-router-dom";
-import { LoadingSpinner } from '../../components/loader/loader.style';
+import SensorData from '../sensor-data/sensor-data';
 const ViewSensor = () => {
   const navigate = useNavigate();
   const { sensorId } = useParams();
@@ -27,7 +26,7 @@ const ViewSensor = () => {
   };
   const removeSensor = (sensor) => {
     if (sensors.length > 1) {
-      let newSensors = sensors.filter((sensr) => { return sensor != sensr });
+      let newSensors = sensors.filter((sensr) => { return sensor !== sensr });
       navigate("/sensor/" + sensorId + "?display=" + displayInterval + "&view=" + newSensors.join(","));
     } else {
       alert(`You can't remove the last sensor`);
@@ -35,29 +34,7 @@ const ViewSensor = () => {
   };
   const updateDisplayInterval = (newInterval) => {
     navigate("/sensor/" + sensorId + "?display=" + newInterval + "&view=" + sensors.join(","));
-
   };
-  React.useEffect(() => {
-    /*Utils.Fetcher.fetchJSON('/sensors').then((data) => {
-      let foundSensor = false;
-      if (sensorId != undefined) {
-        //they supplied a sensor, make sure its in the list
-        Object.keys(data).map((key) => {
-          if (sensorId === data[key].id) {
-            foundSensor = true;
-            setActiveSensor(data[key]);
-          }
-        });
-      }
-      if (sensorId === undefined || foundSensor) {
-        //First load, or no sensor was found, so auto select the first one
-        let firstKey = Object.keys(data)[0];
-        navigate("/"+data[firstKey].id);
-        setActiveSensor(data[firstKey]);
-      }
-      setSensors(data);
-    })*/
-  }, []);
   return (
     <section className='view-sensors'>
       <nav className='sensor_nav'>
@@ -73,17 +50,18 @@ const ViewSensor = () => {
               if (!sensors.includes(sensor)) {
                 return <div key={sensor} onClick={() => { addSensor(sensor); }}>{Utils.Misc.formatProperSensorName(sensor)}</div>
               }
+              return ''
             })}
           </div>
         </div>
       </nav>
       <aside>
         {displayIntervals.map(interval => {
-          return <Button onClick={() => { updateDisplayInterval(interval.toLowerCase()) }}
+          return <Button key={interval} onClick={() => { updateDisplayInterval(interval.toLowerCase()) }}
             theme={displayInterval === interval.toLowerCase() ? 'blue' : 'blue_inactive'}>{interval}</Button>
         })}
         <div className='sensor_chart'>
-          <LoadingSpinner></LoadingSpinner>
+          <SensorData></SensorData>
         </div>
       </aside>
     </section>

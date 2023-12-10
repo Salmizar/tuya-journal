@@ -6,27 +6,24 @@ import { useParams } from 'react-router-dom';
 const AllSensors = ({ setLastUpdate }) => {
     const { sensorId } = useParams();
     const [sensorData, setSensorData] = React.useState(null);
-    const updateInterval = 1000 * 30;
-    const updateSensor = () => {
-        if (sensorId!= undefined) {
-            Utils.Fetcher.fetchJSON(`/sensor/${sensorId}`).then((data) => {
-                setSensorData(data[0]);
-                let lastEventDate = new Date(data[0].created_date);
-                let when = Date.now() - lastEventDate.getTime();
-                setLastUpdate(when);
-            })
-        }
-    };
     React.useEffect(() => {
+        const updateSensor = () => {
+            if (sensorId !== undefined) {
+                Utils.Fetcher.fetchJSON(`/sensor/${sensorId}`).then((data) => {
+                    setSensorData(data[0]);
+                    let lastEventDate = new Date(data[0].created_date);
+                    let when = Date.now() - lastEventDate.getTime();
+                    setLastUpdate(when);
+                });
+            }
+        };
         //Get Active Sensor latest data
-        //if (activeSensor != null) {
+        updateSensor();
+        const timer = setInterval(() => {
             updateSensor();
-            const timer = setInterval(() => {
-                updateSensor();
-            }, updateInterval);
-            return () => { clearInterval(timer) };
-        //}
-    }, [sensorId]);
+        }, 1000 * 30);
+        return () => { clearInterval(timer) };
+    }, [setLastUpdate, sensorId]);
     return (
         <section>
             {!sensorData || sensorId === undefined ?
@@ -36,6 +33,7 @@ const AllSensors = ({ setLastUpdate }) => {
                     if (!'sensor_data_id,created_date,sensor_id'.includes(sensr[0])) {
                         return <SensorCard key={sensr[0]} sensorData={sensr}></SensorCard>
                     }
+                    return ''
                 })}
         </section>
     )

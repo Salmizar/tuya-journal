@@ -10,7 +10,7 @@ const SensorCard = ({ sensorData }) => {
     };
     return (
         <div title={`View historical ${Utils.Misc.formatSensorName(sensorData[0])} data`} className="card" onClick={navigateToSensor}>
-            <img className={'card_ico card_ico_'+sensorData[0]} src={'/images/'+sensorData[0]+'.svg'}></img>
+            <img alt="Sensor Details" className={'card_ico card_ico_'+sensorData[0]} src={'/images/'+sensorData[0]+'.svg'}></img>
             <div className="card_title">
                 {sensorData[0].toUpperCase()}
             </div>

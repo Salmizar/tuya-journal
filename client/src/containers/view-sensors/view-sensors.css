@@ -1,5 +1,4 @@
 aside {
-    width: 600px;
     padding: 10px;
     border-radius: 5px;
     border:1px solid #CCC;
@@ -51,10 +50,12 @@ aside button {
     background-color: #f0f0f0;
 }
 
-
 .add_sensor {
     position: relative;
 }
 .sensor_chart {
-    padding:30px;
+    padding-top:20px;
+}
+aside {
+    height: 500px;
 }
