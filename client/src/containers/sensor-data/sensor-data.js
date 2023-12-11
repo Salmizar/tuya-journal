@@ -47,9 +47,11 @@ const SensorData = ({ setLastUpdate }) => {
                     });
                     dat.push(dataPoint);
                 });
-                let lastEventDate = new Date(results[results.length - 1].created_date);
-                let when = Date.now() - lastEventDate.getTime();
-                setLastUpdate(when);
+                if (results.length>0) {
+                    let lastEventDate = new Date(results[results.length - 1].created_date);
+                    let when = Date.now() - lastEventDate.getTime();
+                    setLastUpdate(when);
+                }
                 setData(dat);
             });
     }, [setLastUpdate, sensorId, displayInterval, sensors]);
@@ -57,6 +59,9 @@ const SensorData = ({ setLastUpdate }) => {
         <div className='sensor_data'>
             {!data ?
                 <LoadingSpinner></LoadingSpinner>
+                :
+                data.length===0 ?
+                    <div>No Data for this period</div>
                 :
                 <ResponsiveContainer width="100%" height={400}>
                     <AreaChart data={data}
