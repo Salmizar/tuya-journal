@@ -10,7 +10,7 @@ begin
 		return QUERY SELECT sd.temp, sd.ph, sd.tds, sd.ec, sd.sal, sd.sg, sd.created_date
 		FROM (
 			SELECT sd.temp, sd.ph, sd.tds, sd.ec, sd.sal, sd.sg, sd.created_date, row_number() OVER(ORDER BY sd.sensor_data_id ASC) AS row FROM sensor_data as sd
-    		WHERE sd.sensor_id = sensr_id and sd.created_date > cut_off_date order by sd.created_date desc
+    		WHERE sd.sensor_id = sensr_id and sd.created_date > cut_off_date order by sd.created_date asc
     		) sd
     	where sd.row % greatest( round(total_rows / total_records::numeric),0.1)  = 0;
     end if;

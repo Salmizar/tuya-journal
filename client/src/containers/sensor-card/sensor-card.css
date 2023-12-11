@@ -15,7 +15,7 @@
     animation: fadeIn 0.5s;
 }
 .card:hover {
-    background-color: #F1eeee;
+    opacity: 0.8;
 }
 .card_title {
     font-size: 20px;
