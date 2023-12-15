@@ -32,14 +32,7 @@ BEGIN
 	CREATE TABLE IF NOT EXISTS journals (
 		journal_id serial PRIMARY KEY,
 		created_date TIMESTAMP NOT NULL,
-		details TEXT NOT NULL,
-		sensor_id VARCHAR ( 50 ) NOT NULL,
-		temp INT NOT NULL,
-		ph INT NOT NULL,
-		tds INT NOT NULL,
-		ec INT NOT NULL,
-		sal INT NOT NULL,
-		sg INT NOT NULL
+		details TEXT NOT NULL
 	);
 END
 $do$

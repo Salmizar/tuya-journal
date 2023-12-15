@@ -48,7 +48,7 @@ const ViewSensor = ({setLastUpdate}) => {
           </div>
         </div>
       </nav>
-      <aside>
+      <aside className='sensor_aside'>
         {displayIntervals.map(interval => {
           return <Button key={interval} onClick={() => { updateDisplayInterval(interval.toLowerCase()) }}
             theme={displayInterval === interval.toLowerCase() ? 'blue' : 'blue_inactive'}>{interval}</Button>

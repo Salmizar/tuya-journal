@@ -25,7 +25,12 @@ export const timeSince = (milliseconds) => {
 export const formatSensorData = (sensorData, addDescrptor=true) => {
     switch( sensorData[0]) {
         case "temp":
-            return sensorData[1]/10+((addDescrptor)?'°C':'');
+            let c = sensorData[1]/10;
+            if (process.env.REACT_APP_UNIT==='F') {
+                return (c*1.8+32).toFixed(1)+((addDescrptor)?'°F':'');
+            } else {
+                return c.toFixed(1)+((addDescrptor)?'°C':'');
+            }
         case "ph":
             return sensorData[1]/100;
         case "tds":

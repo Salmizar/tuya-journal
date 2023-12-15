@@ -40,7 +40,7 @@ const ListSensors = () => {
     })
   }, [sensorId, navigate]);
   return (
-    <main>
+    <main className='sensor_main'>
       <nav>
         <div className="selected_sensor"> 
           <Button theme="blue">{!activeSensor ? 'loading' : activeSensor.name}&nbsp;&nbsp;<b>v</b></Button>
