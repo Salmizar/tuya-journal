@@ -2,7 +2,7 @@ import React from 'react'
 import "./sensor-card.css";
 import { useNavigate, useParams } from "react-router-dom";
 import * as Utils from '../../utils';
-const SensorCard = ({ sensorData }) => {
+const SensorCard = ({ sensorData, size }) => {
     const { sensorId } = useParams();
     const navigate = useNavigate();
     const navigateToSensor = () => {

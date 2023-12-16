@@ -1,17 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './journal.css';
 import JournalItem from '../journal-item/journal-item';
+import JournalEntry from '../journal-entry/journal-entry';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button } from '../../components/button/button.style';
+import * as Utils from '../../utils';
+import { LoadingSpinner } from '../../components/loader/loader.style';
 const Journal = () => {
-  const entries = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20];
+  const navigate = useNavigate();
+  const { journalId } = useParams();
+  const [journalEntries, setJournalEntres] = useState(null);
+  const addJournalEntry = () => {
+    navigate('/journal/add/');
+  };
+  React.useEffect(() => {
+    Utils.Fetcher.fetchJSON(`/journals/`).then((data) => {
+      setJournalEntres(data);
+    });
+  }, []);
   return (
-    <main>
+    <main className='journal'>
       <nav className='journal_nav'>
-        {Object.keys(entries).map(key => {
-          return <JournalItem key={key} sensor_id={key}></JournalItem>
-        })}
+        {journalEntries === null ?
+          <LoadingSpinner></LoadingSpinner>
+          :
+          Object.entries(journalEntries).map((journal_entry) => {
+            return <JournalItem key={journal_entry[1].journal_id} journalData={journal_entry[1]}></JournalItem>
+          })
+        }
       </nav>
-      <aside>
-        
+      <aside className='journal_entry'>
+        {journalId != undefined ?
+          <JournalEntry journalId={journalId}></JournalEntry>
+          :
+          <Button className='add_journal_entry' onClick={addJournalEntry}>Add Journal Entry</Button>
+
+        }
       </aside>
     </main>
   );

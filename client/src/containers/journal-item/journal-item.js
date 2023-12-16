@@ -1,16 +1,17 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import './journal-item.css';
-const JournalItem = ({sensor_id}) => {
+const JournalItem = ({journalData}) => {
   const navigate = useNavigate();
+  const { journalId } = useParams();
+  const journalDate = new Intl.DateTimeFormat('en-US').format(new Date(journalData.created_date));
   const loadEntry = () => {
-    console.log('open', sensor_id);
-    navigate(`/journal/${sensor_id}`);
+    navigate(`/journal/${journalData.journal_id}`);
   }
   return (
-    <div className='journal_entry' onClick={loadEntry}>
-        <div className='journal_title'>Checking on plants, everything looks good!</div>
-        <div className='journal_date'>Nov 7 2023</div>
+    <div className={'journal_item'+(parseInt(journalId)===journalData.journal_id?' journal_selected':'')} onClick={loadEntry}>
+        <div className='journal_title'>{journalData.details}</div>
+        <div className='journal_date'>{journalDate}</div>
     </div>
   )
 }

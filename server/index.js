@@ -21,7 +21,8 @@ app.get("/sensors", cors(), (req, res) => {
   res.json(sensors);
 });
 app.use('/sensor/', cors(), require('./routes/sensor'));
-
+app.use('/journal/', cors(), require('./routes/journal'));
+app.use('/journals/', cors(), require('./routes/journals'));
 //End of Main API Requests
 
 if (process.env.NODE_ENV === 'production') {

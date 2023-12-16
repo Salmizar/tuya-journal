@@ -7,12 +7,12 @@ import ViewSensor from '../view-sensors/view-sensors';
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { LoadingSpinner } from '../../components/loader/loader.style';
 const ListSensors = () => {
+  const { sensorId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const [sensors, setSensors] = React.useState(null);
   const [lastUpdate, setLastUpdate] = React.useState(null);
   const [activeSensor, setActiveSensor] = React.useState(null);
-  const { sensorId } = useParams();
   const selectSensor = (sensor) => {
     setLastUpdate(null);
     setActiveSensor(sensors[sensor[0]]);
@@ -42,7 +42,7 @@ const ListSensors = () => {
   return (
     <main className='sensor_main'>
       <nav>
-        <div className="selected_sensor"> 
+        <div className="selected_sensor">
           <Button theme="blue">{!activeSensor ? 'loading' : activeSensor.name}&nbsp;&nbsp;<b>v</b></Button>
           <div className='select_sensor'>
             {sensors && Object.entries(sensors).map((sensor, index) => {
@@ -56,7 +56,7 @@ const ListSensors = () => {
         location.pathname.includes('/sensor/') ?
           <ViewSensor setLastUpdate={setLastUpdate}></ViewSensor>
           :
-          <AllSensors setLastUpdate={setLastUpdate}></AllSensors>
+          <AllSensors setLastUpdate={setLastUpdate} sensorId={sensorId}></AllSensors>
         :
         <LoadingSpinner></LoadingSpinner>
       }

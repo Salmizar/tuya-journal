@@ -13,7 +13,9 @@ function App() {
           <Route path="/" element={<ListSensors />} />
           <Route path="/:sensorId" element={<ListSensors />} />
           <Route path="/sensor/:sensorId/" element={<ListSensors />} />
-          <Route path="/journal/*" element={<Journal />} />
+          <Route path="/journal/" element={<Journal />} />
+          <Route path="/journal/:journalId" element={<Journal />} />
+          <Route path="/journal/:journalId/edit" element={<Journal />} />
         </Routes>
       </div>
     </BrowserRouter>

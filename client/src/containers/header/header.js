@@ -7,11 +7,11 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const navigateToAllSensors = () => { navigate("/"); }
-  const navigateToJournal = () => { navigate("/Journal"); }
+  const navigateToJournal = () => { navigate("/journal"); }
   return (
     <header>
-      <Button theme={!location.pathname.includes("/Journal") ? "blue" : "blue_inactive"} onClick={navigateToAllSensors}>Sensors</Button>
-      <Button theme={location.pathname.includes("/Journal") ? "blue" : "blue_inactive"} onClick={navigateToJournal}>Journal</Button>
+      <Button theme={!location.pathname.includes("/journal") ? "blue" : "blue_inactive"} onClick={navigateToAllSensors}>Sensors</Button>
+      <Button theme={location.pathname.includes("/journal") ? "blue" : "blue_inactive"} onClick={navigateToJournal}>Journal</Button>
     </header>
   )
 }

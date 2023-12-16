@@ -1,9 +1,23 @@
+.journal {
+    display:flex;
+}
 .journal_nav {
     margin: 10px;
     width: 40%;
     border: 1px solid #CCC;
-    border-radius: 10px;
+    border-radius: 5px;
     height: calc(100vh - 100px);
     height: calc(100svh - 100px);
     overflow-y: auto;
+}
+.journal_entry {
+    position: relative;
+    width: 60%;
+    text-align:unset;
+}
+.add_journal_entry {
+    position:absolute;
+    left: calc(50% - 85px);
+    top: 40%;
+
 }
