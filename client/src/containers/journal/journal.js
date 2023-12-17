@@ -14,7 +14,7 @@ const Journal = () => {
     navigate('/journal/add/');
   };
   React.useEffect(() => {
-    Utils.Fetcher.fetchJSON(`/journals/`).then((data) => {
+    Utils.Fetcher.get(`/journals/`).then((data) => {
       setJournalEntres(data);
     });
   }, []);
@@ -30,7 +30,7 @@ const Journal = () => {
         }
       </nav>
       <aside className='journal_entry'>
-        {journalId != undefined ?
+        {journalId !== undefined ?
           <JournalEntry journalId={journalId}></JournalEntry>
           :
           <Button className='add_journal_entry' onClick={addJournalEntry}>Add Journal Entry</Button>

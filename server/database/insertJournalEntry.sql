@@ -3,9 +3,9 @@ SETOF journals AS $$
 DECLARE new_journal_id INTEGER;
 BEGIN
     INSERT INTO journals
-    (created_date, details)
+    (details, created_date)
      VALUES
-     (created_date, details) RETURNING journal_id INTO new_journal_id;
+     (details, created_date) RETURNING journal_id INTO new_journal_id;
 
     RETURN QUERY SELECT * FROM journals WHERE journal_id = new_journal_id;
 END;

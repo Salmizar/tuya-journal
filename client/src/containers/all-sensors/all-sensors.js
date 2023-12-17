@@ -3,18 +3,18 @@ import './all-sensors.css';
 import * as Utils from '../../utils';
 import SensorCard from '../sensor-card/sensor-card';
 import { LoadingSpinner } from '../../components/loader/loader.style';
-const AllSensors = ({ setLastUpdate, sensorId, size="normal", captureDate=null }) => {
+const AllSensors = ({ setLastUpdate, sensorId, size="normal", captureDate=undefined }) => {
     const [sensorData, setSensorData] = React.useState(null);
     React.useEffect(() => {
         const updateSensor = () => {
             if (sensorId !== undefined) {
                 const capDate = new Date(captureDate);
-                const url = (captureDate!=undefined)?`/sensor/${sensorId}/entry/${capDate.getTime()}`:`/sensor/${sensorId}`;
-                Utils.Fetcher.fetchJSON(url).then((data) => {
+                const url = (captureDate!==undefined)?`/sensor/${sensorId}/entry/${capDate.getTime()}`:`/sensor/${sensorId}`;
+                Utils.Fetcher.get(url).then((data) => {
                     setSensorData(data[0]);
                     let lastEventDate = new Date(data[0].created_date);
                     let when = Date.now() - lastEventDate.getTime();
-                    if (setLastUpdate!=null) {
+                    if (setLastUpdate!==null) {
                         setLastUpdate(when);
                     }
                 });
@@ -45,4 +45,4 @@ const AllSensors = ({ setLastUpdate, sensorId, size="normal", captureDate=null }
     )
 }
 
-export default AllSensors
+export default React.memo(AllSensors)

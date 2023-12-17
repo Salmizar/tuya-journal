@@ -1,4 +1,5 @@
 const dal = require('../helpers/dal');
+const misc = require('../helpers/misc');
 const TuyAPI = require('tuyapi');
 const captureWindow = 1000 * 60;
 const reconnectTimeout = 1000 * 30 ;
@@ -28,10 +29,7 @@ const avgData = (data) => {
 const postData = (sensor) => {
     let query = `SELECT * from public.insertsensordata(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8));`;
     let d = avgData(sensor_data[sensor]);
-    let ts = new Date(d.datetime);
-    timestamp = ts.getFullYear() + '-' + (ts.getMonth()+1) + '-' + ts.getDate()
-    timestamp += ' ' + ts.getHours() + ':' + ts.getMinutes() + ':' + ts.getSeconds();
-    let values = [timestamp, sensors[sensor].id, d['8'], d['102'], d['107'], d['110'], d['113'], d['116']];
+    let values = [misc.milliToTS(d.datetime), sensors[sensor].id, d['8'], d['102'], d['107'], d['110'], d['113'], d['116']];
     dal.query(query, values).then((data) => {
         console.log(`New Record inserted for sensor: ${sensors[sensor].id}`);
     });

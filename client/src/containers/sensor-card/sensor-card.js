@@ -17,7 +17,7 @@ const SensorCard = ({ sensorData, size }) => {
             case 'M':
                 interval = 'month';
                 break;
-            case 'Y':
+            default://'Yy
                 interval = 'year';
                 break;
         }

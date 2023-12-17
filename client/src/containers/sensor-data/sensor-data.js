@@ -20,7 +20,7 @@ const SensorData = ({ setLastUpdate }) => {
     const [data, setData] = React.useState(null);
     React.useEffect(() => {
             let cutOffDate = Date.now() - Utils.Misc.one[displayInterval];
-            Utils.Fetcher.fetchJSON(`/sensor/${sensorId}/${cutOffDate}`).then((results) => {
+            Utils.Fetcher.get(`/sensor/${sensorId}/${cutOffDate}`).then((results) => {
                 let dat = [];
                 Object.entries(results).forEach((entry) => {
                     let dataPoint = {};

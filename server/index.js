@@ -5,6 +5,9 @@ const path = require('path');
 const app = express();
 const sensors = require('./sensors.json');
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+
 const tuya_monitor = require('./helpers/tuya_monitor');
 const PORT = process.env.PORT || 3001;
 

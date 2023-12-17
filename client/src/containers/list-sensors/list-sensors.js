@@ -19,7 +19,7 @@ const ListSensors = () => {
     navigate("/" + sensor[1].id);
   };
   React.useEffect(() => {
-    Utils.Fetcher.fetchJSON('/sensors').then((data) => {
+    Utils.Fetcher.get('/sensors').then((data) => {
       let foundSensor = false;
       if (sensorId !== undefined) {
         //they supplied a sensor, make sure its in the list

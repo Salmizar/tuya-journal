@@ -11,7 +11,7 @@ router.get('/:sensor_id', function (request, response) {
 });
 router.get('/:sensor_id/:cut_off_date', function (request, response) {
     const query = `SELECT * from public.getsensordata(($1),($2),($3));`;
-    const cut_off_date = new Date(Date.now() - (Date.now() - parseInt(request.params.cutoffdate)));
+    const cut_off_date = new Date(Date.now() - (Date.now() - parseInt(request.params.cut_off_date)));
     const values = [request.params.sensor_id, cut_off_date, null];
     dal.query(query, values).then((data) => {
         response.json(data);

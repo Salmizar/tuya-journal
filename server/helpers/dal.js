@@ -2,10 +2,8 @@ const { Client } = require('pg');
 require('dotenv').config();
 const useSSL = false;
 exports.query = (txtQuery, values) => {
-    //console.log('query', query, values)
     return new Promise(async (resolve, reject) => {
         getClient().then(async (client) => {
-            //query('INSERT INTO sensor_data(name) VALUES($1);', [`${name}`]);
             let query = {
                 text: txtQuery,
                 values: values
