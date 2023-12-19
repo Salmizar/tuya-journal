@@ -1,7 +1,7 @@
 const dal = require('../helpers/dal');
 const misc = require('../helpers/misc');
 const TuyAPI = require('tuyapi');
-const captureWindow = 1000 * 60;
+const captureWindow = 1000 * 60 * 5;
 const reconnectTimeout = 1000 * 30 ;
 var sensors = {};
 var sensor_data = {};
