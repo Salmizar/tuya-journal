@@ -6,8 +6,7 @@ import { LoadingSpinner } from '../../components/loader/loader.style';
 import { Button } from '../../components/button/button.style';
 import { TextArea } from '../../components/textarea/textarea.style';
 import { useLocation, useNavigate } from 'react-router-dom';
-const JournalEntry = ({ journalId }) => {
-  const dteFormat = { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', };
+const JournalEntry = ({ journalId, updateJournals }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [editing, setEditing] = useState(location.pathname.includes("/edit"));
@@ -26,6 +25,7 @@ const JournalEntry = ({ journalId }) => {
     if (window.confirm('Are you sure you want to delete this Journal entry?')) {
       Utils.Fetcher.fetchDelete(`/journal/${journalId}`).then((data) => {
         navigate(`/journal/`);
+        updateJournals();
       });
     }
   }
@@ -36,15 +36,16 @@ const JournalEntry = ({ journalId }) => {
     } else if (journalId === 'add') {
       Utils.Fetcher.post(`/journal/`, journalEntry).then((data) => {
         navigate(`/journal/${data[0].journal_id}`);
+        updateJournals();
       });
     } else {
       Utils.Fetcher.put(`/journal/${journalId}`, journalEntry).then((data) => {
         setEditing(!editing);
         navigate('/journal/' + journalId );
         setJournalEntry(data[0]);
-        setJournalDate(new Intl.DateTimeFormat('en-US', dteFormat).format(new Date(data[0].created_date)));
+        setJournalDate(Utils.Misc.formatDate(data[0].created_date));
+        updateJournals();
       });
-      console.log('save existing', journalId);
     }
   }
   const handleEditEntry = () => {
@@ -64,21 +65,25 @@ const JournalEntry = ({ journalId }) => {
     navigate('/journal/');
   }
   const getJournalEntry = useCallback(() => {
-    const dteFormat = { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', };
     if (journalId === 'add') {
       const blankEntry = {
         created_date: Date.now(),
         details: ''
       }
       setJournalEntry(blankEntry);
-      setJournalDate(new Intl.DateTimeFormat('en-US', dteFormat).format(new Date()));
+      setJournalDate(Utils.Misc.formatDate(new Date()));
     } else if (journalId !== undefined) {
       Utils.Fetcher.get(`/journal/${journalId}`).then((data) => {
-        setJournalEntry(data[0]);
-        setJournalDate(new Intl.DateTimeFormat('en-US', dteFormat).format(new Date(data[0].created_date)));
+        if (data.length>0) {
+          setJournalEntry(data[0]);
+          setJournalDate(Utils.Misc.formatDate(data[0].created_date));
+        } else {
+          alert(`Oops, wasn't able to find the requested Journal`);
+          navigate('/journal/');
+        }
       });
     }
-  }, [journalId]);
+  }, [journalId, navigate]);
   React.useEffect(() => {
     getJournalEntry();
   }, [journalId, getJournalEntry]);
@@ -88,7 +93,7 @@ const JournalEntry = ({ journalId }) => {
       let firstKey = Object.keys(data)[0];
       setActiveSensor(data[firstKey]);
     });
-  }, [journalEntry]);
+  }, []);
   return (
     <>
       <h1>Journal Entry</h1>
@@ -107,7 +112,7 @@ const JournalEntry = ({ journalId }) => {
           </div>
         </div>
         {sensors !== null && journalEntry ?
-          <AllSensors setLastUpdate={null} sensorId={activeSensor.id} captureDate={journalEntry.created_date} size='small'></AllSensors>
+          <AllSensors setLastUpdate={null} sensorId={activeSensor.id} captureDate={journalEntry.created_date}></AllSensors>
           :
           <LoadingSpinner></LoadingSpinner>
         }

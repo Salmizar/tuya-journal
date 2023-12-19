@@ -3,7 +3,7 @@ import './list-sensors.css';
 import * as Utils from '../../utils';
 import { Button } from "../../components/button/button.style";
 import AllSensors from '../all-sensors/all-sensors';
-import ViewSensor from '../view-sensors/view-sensors';
+import ViewSensor from '../view-sensor/view-sensor';
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { LoadingSpinner } from '../../components/loader/loader.style';
 const ListSensors = () => {

@@ -1,6 +1,7 @@
 h1 {
     padding: 20px;
     font-size: 30px;
+    white-space: nowrap;
 }
 h2 {
     position: absolute;
@@ -13,8 +14,8 @@ h2 {
 }
 TextArea {
     margin-top: 40px;
-    margin-left: 20px;
-    width: calc( 100% - 40px);
+    margin-left: 10px;
+    width: calc( 100% - 30px);
     height: 200px;
 }
 .entry_sensor_data .all_sensors {
@@ -27,6 +28,7 @@ TextArea {
     width: 87px;
     height: 100px;
     font-size:14px;
+    animation:none;
 }
 .entry_sensor_data .all_sensors .card .card_ico {
     width: 25px;

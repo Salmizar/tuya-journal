@@ -9,13 +9,18 @@ import { LoadingSpinner } from '../../components/loader/loader.style';
 const Journal = () => {
   const navigate = useNavigate();
   const { journalId } = useParams();
-  const [journalEntries, setJournalEntres] = useState(null);
+  const [journalEntries, setJournalEntries] = useState(null);
   const addJournalEntry = () => {
     navigate('/journal/add/');
   };
+  const updateJournals = () => {
+    Utils.Fetcher.get(`/journals/`).then((data) => {
+      setJournalEntries(data);
+    });
+  };
   React.useEffect(() => {
     Utils.Fetcher.get(`/journals/`).then((data) => {
-      setJournalEntres(data);
+      setJournalEntries(data);
     });
   }, []);
   return (
@@ -31,7 +36,7 @@ const Journal = () => {
       </nav>
       <aside className='journal_entry'>
         {journalId !== undefined ?
-          <JournalEntry journalId={journalId}></JournalEntry>
+          <JournalEntry journalId={journalId} updateJournals={updateJournals}></JournalEntry>
           :
           <Button className='add_journal_entry' onClick={addJournalEntry}>Add Journal Entry</Button>
 

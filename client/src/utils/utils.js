@@ -5,7 +5,11 @@ export const one = {
     day: 1000 * 60 * 60 * 24,
     week: 1000 * 60 * 60 * 24 * 7,
     month: 1000 * 60 * 60 * 24 * 7 * 30,
-    year: 1000 * 60 * 60 * 24 * 7 * 360
+    year: 1000 * 60 * 60 * 24 * 365
+}
+export const dteFormat = { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', };
+export const formatDate = (dte) => {
+    return new Intl.DateTimeFormat('en-US', dteFormat).format(new Date(dte));
 }
 export const timeSince = (milliseconds) => {
     if (milliseconds > one.week) {//weeks

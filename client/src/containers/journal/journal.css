@@ -4,6 +4,7 @@
 .journal_nav {
     margin: 10px;
     width: 40%;
+    background-color: white;
     border: 1px solid #CCC;
     border-radius: 5px;
     height: calc(100vh - 100px);
@@ -19,5 +20,23 @@
     position:absolute;
     left: calc(50% - 85px);
     top: 40%;
-
+}
+@media screen and (max-width: 690px),
+       screen and (max-height: 600px)  {
+    .journal_nav {
+        position:absolute;
+        width: calc(100vw - 20px);
+        height: 150px;
+        z-index: 1;
+    }
+    .journal_entry {
+        width: 100%;
+        position:relative;
+        top: 150px;
+    }
+    .add_journal_entry {
+        position:absolute;
+        left: calc(50% - 85px);
+        top: 40%;;
+    }    
 }

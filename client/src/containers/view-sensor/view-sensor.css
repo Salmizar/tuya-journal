@@ -7,8 +7,17 @@ aside button {
     margin: 10px;
     margin-top: 0px;
 }
-.view-sensors {
+.view_sensor {
     position: relative;
+}
+.view_sensor_date {
+    position:absolute;
+    background-color: white;
+    width: 150px;
+    text-align: right;
+    right: 0px;
+    top: -125px;
+    z-index: 10;
 }
 .sensor_nav {
     position: relative;

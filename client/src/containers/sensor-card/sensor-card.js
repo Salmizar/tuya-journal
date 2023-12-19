@@ -1,9 +1,8 @@
 import React from 'react'
 import "./sensor-card.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Utils from '../../utils';
-const SensorCard = ({ sensorData, size }) => {
-    const { sensorId } = useParams();
+const SensorCard = ({ sensorData, sensorId, captureDate }) => {
     const navigate = useNavigate();
     const navigateToSensor = () => {
         let interval = 'hour';
@@ -17,11 +16,18 @@ const SensorCard = ({ sensorData, size }) => {
             case 'M':
                 interval = 'month';
                 break;
-            default://'Yy
+            default://'Y'
                 interval = 'year';
                 break;
         }
-        navigate(`/sensor/${sensorId}?&display=${interval}&view=${sensorData[0]}`);
+        let url = `/sensor/${sensorId}?view=${sensorData[0]}`;
+        if (captureDate) {
+            let dte = new Date(captureDate);
+            url += `&end_date=${(dte.getTime())}&display=hour`;
+        } else {
+            url += `&display=${interval}`;
+        }
+        navigate(url);
     };
     return (
         <div title={`View historical ${Utils.Misc.formatSensorName(sensorData[0])} data`} style={{ backgroundColor: Utils.Theme.theme[Utils.Theme.sensorColors[sensorData[0]]].muted }} className="card" onClick={navigateToSensor}>

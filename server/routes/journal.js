@@ -13,7 +13,6 @@ router.get('/:journal_id', function (request, response) {
 router.delete('/:journal_id', function (request, response) {
     const query = `SELECT * from public.deletejournalentry(($1));`;
     const values = [request.params.journal_id];
-    console.log(values);
     dal.query(query, values).then((data) => {
         response.json(data);
     })
