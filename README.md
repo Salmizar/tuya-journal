@@ -4,14 +4,16 @@ An App that will capture, store and display Tuya water monitor device data.
 There is also a journaling component that will pull Tuya data to add
 context to journal entries. See requirements folder for details.
 
+The backend needs to reside on the same network as the Tuya water monitor in order
+to capture data, so there will not be a demo available for this project.
+
 # Build with
 
 ```
-Frontend: React, TailwindCSS
-Backend: Node/Express, PostgreSQL, RESTful API
+Frontend: React, TailwindCSS, ReCharts.
+Backend: Node/Express, PostgreSQL, TuyAPI, RESTful API.
 
-Recommend using pm2 for backend management. Sensors randomly 'ECONNREFUSED',
-causing app to crash within tuyapi
+Recommend running with pm2.
 ```
 
 # Instructions on adding TuyAPI and obtaining device id and key
