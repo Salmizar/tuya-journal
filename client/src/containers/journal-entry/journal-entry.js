@@ -6,14 +6,13 @@ import { LoadingSpinner } from '../../components/loader/loader.style';
 import { Button } from '../../components/button/button.style';
 import { TextArea } from '../../components/textarea/textarea.style';
 import { useLocation, useNavigate } from 'react-router-dom';
+import useSensors from '../../hooks/useSensors';
 const JournalEntry = ({ journalId, updateJournals }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [editing, setEditing] = useState(location.pathname.includes("/edit"));
+  const {sensors, activeSensor, setActiveSensor} = useSensors();
   const [journalEntry, setJournalEntry] = useState(null);
-  const [sensors, setSensors] = React.useState(null);
-  const [activeSensor, setActiveSensor] = React.useState(null);
-  const [journalDate, setJournalDate] = React.useState(null);
   const selectSensor = (sensor) => {
     setActiveSensor(sensors[sensor[0]]);
   };
@@ -43,7 +42,6 @@ const JournalEntry = ({ journalId, updateJournals }) => {
         setEditing(!editing);
         navigate('/journal/' + journalId );
         setJournalEntry(data[0]);
-        setJournalDate(Utils.Misc.formatDate(data[0].created_date));
         updateJournals();
       });
     }
@@ -71,12 +69,10 @@ const JournalEntry = ({ journalId, updateJournals }) => {
         details: ''
       }
       setJournalEntry(blankEntry);
-      setJournalDate(Utils.Misc.formatDate(new Date()));
     } else if (journalId !== undefined) {
       Utils.Fetcher.get(`/journal/${journalId}`).then((data) => {
         if (data.length>0) {
           setJournalEntry(data[0]);
-          setJournalDate(Utils.Misc.formatDate(data[0].created_date));
         } else {
           alert(`Oops, wasn't able to find the requested Journal`);
           navigate('/journal/');
@@ -87,17 +83,16 @@ const JournalEntry = ({ journalId, updateJournals }) => {
   React.useEffect(() => {
     getJournalEntry();
   }, [journalId, getJournalEntry]);
-  React.useEffect(() => {
-    Utils.Fetcher.get('/sensors').then((data) => {
-      setSensors(data);
-      let firstKey = Object.keys(data)[0];
-      setActiveSensor(data[firstKey]);
-    });
-  }, []);
   return (
     <>
       <h1>Journal Entry</h1>
-      <h2>{journalDate}</h2>
+      <h2>
+        {journalEntry ?
+          Utils.Misc.formatDate(journalEntry.created_date)
+          :
+          null
+        }
+      </h2>
       <div className='entry_sensor_data'>
         <div className="selected_sensor">
           <Button theme="blue">{!activeSensor ? 'loading' : activeSensor.name}&nbsp;&nbsp;<b>v</b></Button>

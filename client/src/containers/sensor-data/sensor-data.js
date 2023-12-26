@@ -65,7 +65,7 @@ const SensorData = ({ setLastUpdate }) => {
             }
             setData(dat);
         });
-    }, [setLastUpdate, sensorId, displayInterval, sensors]);
+    }, [setLastUpdate, sensorId, displayInterval, sensors, end_date]);
     return (
         <div className='sensor_data'>
             {!data ?

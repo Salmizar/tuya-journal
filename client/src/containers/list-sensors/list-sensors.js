@@ -6,39 +6,38 @@ import AllSensors from '../all-sensors/all-sensors';
 import ViewSensor from '../view-sensor/view-sensor';
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { LoadingSpinner } from '../../components/loader/loader.style';
+import useSensors from '../../hooks/useSensors';
 const ListSensors = () => {
-  const { sensorId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const [sensors, setSensors] = React.useState(null);
+  const { sensorId } = useParams();
+  const {sensors, activeSensor, setActiveSensor} = useSensors();
   const [lastUpdate, setLastUpdate] = React.useState(null);
-  const [activeSensor, setActiveSensor] = React.useState(null);
   const selectSensor = (sensor) => {
     setLastUpdate(null);
     setActiveSensor(sensors[sensor[0]]);
     navigate("/" + sensor[1].id);
   };
   React.useEffect(() => {
-    Utils.Fetcher.get('/sensors').then((data) => {
+    if (sensors) {
       let foundSensor = false;
       if (sensorId !== undefined) {
         //they supplied a sensor, make sure its in the list
-        Object.keys(data).forEach((key) => {
-          if (sensorId === data[key].id) {
+        Object.keys(sensors).forEach((key) => {
+          if (sensorId === sensors[key].id) {
             foundSensor = true;
-            setActiveSensor(data[key]);
+            setActiveSensor(sensors[key]);
           }
         });
       }
       if (sensorId === undefined || !foundSensor) {
-        //First load, or no sensor was found, so auto select the first one
-        let firstKey = Object.keys(data)[0];
-        navigate("/" + data[firstKey].id);
-        setActiveSensor(data[firstKey]);
+        //First load, or no sensor was found, auto select the first one
+        let firstKey = Object.keys(sensors)[0];
+        navigate("/" + sensors[firstKey].id);
+        setActiveSensor(sensors[firstKey]);
       }
-      setSensors(data);
-    })
-  }, [sensorId, navigate]);
+    }
+  }, [sensors, sensorId, navigate, setActiveSensor]);
   return (
     <main className='sensor_main'>
       <nav>
