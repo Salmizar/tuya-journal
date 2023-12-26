@@ -24,6 +24,27 @@ https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md
 
 If reset the device you will need to obtain a new device key from tuya-cli wizard
 
+# Docker public image available
+```
+[Docker Image](https://hub.docker.com/r/salmizar/tuya-journal)
+
+Interal port: 3000
+
+Necessary environment variables
+NODE_ENV='production', PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE
+```
+
+# Docker command helpers
+
+Build docker image: In App root folder
+```
+docker build -t RepoName/tuya-journal .
+```
+Push to Docker hub (must have an existing repo in your hub to push to)
+```
+docker push RepoName/tuya-journal
+```
+
 # Sensor information
 ```
 {

@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 const tuya_monitor = require('./helpers/tuya_monitor');
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 if (process.env.NODE_ENV === 'production') {
   // If in production, have Node serve the files for our built React app

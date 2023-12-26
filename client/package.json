@@ -12,6 +12,7 @@
     "react-scripts": "^5.0.1",
     "recharts": "^2.10.3",
     "styled-components": "^6.1.1",
+    "tuyapi": "github:codetheweb/tuyapi",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -14,9 +14,11 @@
 /server/node_modules
 
 # server
-/client/.env
-# client
 /server/.env
+/server/.env.production
+# client
+/client/.env
+/client/.env.production
 
 # misc
 .DS_Store
