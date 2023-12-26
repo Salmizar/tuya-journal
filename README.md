@@ -4,9 +4,6 @@ An App that will capture, store and display Tuya water monitor device data.
 There is also a journaling component that will pull Tuya data to add
 context to journal entries. See requirements folder for details.
 
-The backend needs to reside on the same network as the Tuya water monitor in order
-to capture data, so there will not be a demo available for this project.
-
 # Build with
 
 ```
@@ -25,12 +22,12 @@ https://github.com/codetheweb/tuyapi/blob/master/docs/SETUP.md
 If reset the device you will need to obtain a new device key from tuya-cli wizard
 
 # Docker public image available
-```
-[Docker Image](https://hub.docker.com/r/salmizar/tuya-journal)
 
+[Docker Image:salmizar/tuya-journal](https://hub.docker.com/r/salmizar/tuya-journal)
+```
 Interal port: 3000
 
-Necessary environment variables
+Necessary environment variables:
 NODE_ENV='production', PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE
 ```
 
