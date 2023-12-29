@@ -4,14 +4,14 @@ const Pagination = ({ state, updateState }) => {
     const [pages, setPages] = useState([]);
     const maxDisplayed = 5;
     const updatePage = (page) => {
-        updateState({ action:"page", page: page });
+        updateState({ action: "page", page: page });
     }
     React.useEffect(() => {
         let startPg = Math.max(state.page - Math.floor(maxDisplayed / 2), 1);
         let endPg = startPg + maxDisplayed - 1;
         let maxEnd = Math.ceil(state.entries.length / state.perpage);
         if (endPg > maxEnd) {
-            startPg = (maxEnd-maxDisplayed+1>1)?maxEnd-maxDisplayed+1:1;
+            startPg = (maxEnd - maxDisplayed + 1 > 1) ? maxEnd - maxDisplayed + 1 : 1;
             endPg = maxEnd;
         };
         let pges = [];

@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 import './journal.css';
 import JournalItem from '../journal-item/journal-item';
 import JournalEntry from '../journal-entry/journal-entry';
@@ -14,32 +14,30 @@ const Journal = () => {
   const stateReducer = (state, action) => {
     switch (action.type) {
       case "entries":
-        return {...state, originalEntries: action.entries, entries: action.entries };
+        return { ...state, originalEntries: action.entries, entries: action.entries };
       case "search":
         const results = state.originalEntries.filter((entry) => entry.details.toLocaleLowerCase().includes(action.search.toLocaleLowerCase()));
-        return {...state, entries: results, search: action.search };
+        return { ...state, entries: results, search: action.search };
       case "page":
-        return {...state, page: action.page};
+        return { ...state, page: action.page };
       default:
         return state;
     }
   };
-  const [state, updateState] = useReducer(stateReducer, { perpage: 20, page: 1, search: '', _entries:[] , entries:[] });
+  const [state, updateState] = useReducer(stateReducer, { perpage: 20, page: 1, search: '', _entries: [], entries: [] });
   const setSearch = (search) => {
-    updateState({type:'search', search: search});
+    updateState({ type: 'search', search: search });
   }
   const addJournalEntry = () => {
     navigate('/journal/add/');
   };
   const updateJournals = () => {
     Utils.Fetcher.get(`/api/journals/`).then((data) => {
-      updateState({type:'entries', entries: data});
+      updateState({ type: 'entries', entries: data });
     });
   };
   React.useEffect(() => {
-    Utils.Fetcher.get(`/api/journals/`).then((data) => {
-      updateState({type:'entries', entries: data});
-    });
+    updateJournals();
   }, []);
   return (
     <main className='journal'>
@@ -70,14 +68,13 @@ const Journal = () => {
                 onChange={(e) => setSearch(e.target.value)}
               ></Input>
               {state.search !== '' ?
-                <img title="Clear search criteria for searching journals" onClick={() => { setSearch('') }} src='../images/close.svg'></img>
+                <img alt="Clear search criteria for searching journals" onClick={() => { setSearch('') }} src='../images/close.svg'></img>
                 :
                 null
               }
             </div>
             <Button title='Add a new journal entry' className='add_journal_entry' onClick={addJournalEntry}>Add Journal Entry</Button>
           </>
-
         }
       </aside>
     </main>
