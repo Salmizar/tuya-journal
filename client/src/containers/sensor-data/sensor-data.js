@@ -20,7 +20,7 @@ const SensorData = ({ setLastUpdate }) => {
     };
     const [data, setData] = React.useState(null);
     React.useEffect(() => {
-        let url = `/sensor/${sensorId}/`;
+        let url = `/api/sensor/${sensorId}/`;
         if (end_date) {
             let interval = Utils.Misc.one[displayInterval]/2;
             let startDate = parseInt(end_date) - interval;

@@ -17,15 +17,12 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Main API Requests
-app.get("/api", cors(), (req, res) => {
-    res.json({ message: "Hello from server!" });
-});
-app.get("/sensors", cors(), (req, res) => {
+app.get("/api/sensors", cors(), (req, res) => {
   res.json(sensors);
 });
-app.use('/sensor/', cors(), require('./routes/sensor'));
-app.use('/journal/', cors(), require('./routes/journal'));
-app.use('/journals/', cors(), require('./routes/journals'));
+app.use('/api/sensor/', cors(), require('./routes/sensor'));
+app.use('/api/journal/', cors(), require('./routes/journal'));
+app.use('/api/journals/', cors(), require('./routes/journals'));
 //End of Main API Requests
 
 if (process.env.NODE_ENV === 'production') {

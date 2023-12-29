@@ -8,7 +8,7 @@ const AllSensors = ({ setLastUpdate, sensorId, size = "normal", captureDate = un
     React.useEffect(() => {
         const updateSensor = () => {
             if (sensorId) {
-                let url = `/sensor/${sensorId}`;
+                let url = `/api/sensor/${sensorId}`;
                 const capDate = new Date(captureDate);
                 if (captureDate) {
                     url += `/${capDate.getTime()}`;

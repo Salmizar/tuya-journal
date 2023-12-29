@@ -1,0 +1,23 @@
+.pagination {
+    white-space: nowrap;
+    display:flex;
+    justify-content: center;
+}
+.page_item {
+    background-color: #FFF;
+    border-radius: 5px;
+    width: 32px;
+    height: 32px;
+    border: 1px solid white;
+    font-weight: bold;
+    font-size: 14px;
+    padding-top:3px;
+    margin: 5px;
+    cursor: pointer;
+}
+.page_item:hover {
+    border: 1px solid lightgray;
+}
+.page_item_selected {
+    background-color: #EFEFEF;
+}

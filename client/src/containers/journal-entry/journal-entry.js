@@ -22,7 +22,7 @@ const JournalEntry = ({ journalId, updateJournals }) => {
   }
   const handleDeleteEntry = () => {
     if (window.confirm('Are you sure you want to delete this Journal entry?')) {
-      Utils.Fetcher.fetchDelete(`/journal/${journalId}`).then((data) => {
+      Utils.Fetcher.fetchDelete(`/api/journal/${journalId}`).then((data) => {
         navigate(`/journal/`);
         updateJournals();
       });
@@ -33,12 +33,12 @@ const JournalEntry = ({ journalId, updateJournals }) => {
       alert('Try and include some substance in your journal entry.');
       document.getElementById('journal_entry').focus();
     } else if (journalId === 'add') {
-      Utils.Fetcher.post(`/journal/`, journalEntry).then((data) => {
+      Utils.Fetcher.post(`/api/journal/`, journalEntry).then((data) => {
         navigate(`/journal/${data[0].journal_id}`);
         updateJournals();
       });
     } else {
-      Utils.Fetcher.put(`/journal/${journalId}`, journalEntry).then((data) => {
+      Utils.Fetcher.put(`/api/journal/${journalId}`, journalEntry).then((data) => {
         setEditing(!editing);
         navigate('/journal/' + journalId );
         setJournalEntry(data[0]);
@@ -70,7 +70,7 @@ const JournalEntry = ({ journalId, updateJournals }) => {
       }
       setJournalEntry(blankEntry);
     } else if (journalId !== undefined) {
-      Utils.Fetcher.get(`/journal/${journalId}`).then((data) => {
+      Utils.Fetcher.get(`/api/journal/${journalId}`).then((data) => {
         if (data.length>0) {
           setJournalEntry(data[0]);
         } else {

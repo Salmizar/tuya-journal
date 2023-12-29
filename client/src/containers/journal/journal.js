@@ -6,34 +6,43 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button } from '../../components/button/button.style';
 import * as Utils from '../../utils';
 import { LoadingSpinner } from '../../components/loader/loader.style';
+import Pagination from '../../components/pagination/pagination';
 const Journal = () => {
   const navigate = useNavigate();
   const { journalId } = useParams();
   const [journalEntries, setJournalEntries] = useState(null);
+  const [journalPaging, setJournalPaging] = useState({ perpage: 20, page: 1, total: 0 });
   const addJournalEntry = () => {
     navigate('/journal/add/');
   };
   const updateJournals = () => {
-    Utils.Fetcher.get(`/journals/`).then((data) => {
+    Utils.Fetcher.get(`/api/journals/`).then((data) => {
+      setJournalPaging({...journalPaging, total:data.length});
       setJournalEntries(data);
     });
   };
   React.useEffect(() => {
-    Utils.Fetcher.get(`/journals/`).then((data) => {
+    Utils.Fetcher.get(`/api/journals/`).then((data) => {
+      setJournalPaging({...journalPaging, total:data.length});
       setJournalEntries(data);
     });
   }, []);
   return (
     <main className='journal'>
-      <nav className='journal_nav'>
+      <aside className='journal_nav'>
         {journalEntries === null ?
           <LoadingSpinner></LoadingSpinner>
           :
-          Object.entries(journalEntries).map((journal_entry) => {
-            return <JournalItem key={journal_entry[1].journal_id} journalData={journal_entry[1]}></JournalItem>
+          Object.entries(journalEntries).map((journal_entry, i) => {
+            if (i>=(journalPaging.page-1) * journalPaging.perpage && i < journalPaging.page * journalPaging.perpage) {
+              return <JournalItem key={journal_entry[1].journal_id} journalData={journal_entry[1]}></JournalItem>
+            } else {
+              return null;
+            }
           })
         }
-      </nav>
+      </aside>
+      <Pagination paging={journalPaging} setPaging={setJournalPaging}></Pagination>
       <aside className='journal_entry'>
         {journalId !== undefined ?
           <JournalEntry journalId={journalId} updateJournals={updateJournals}></JournalEntry>
