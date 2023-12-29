@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import './journal.css';
 import JournalItem from '../journal-item/journal-item';
 import JournalEntry from '../journal-entry/journal-entry';
@@ -11,35 +11,44 @@ import { Input } from '../../components/input/input.style';
 const Journal = () => {
   const navigate = useNavigate();
   const { journalId } = useParams();
-  const [journalEntries, setJournalEntries] = useState(null);
-  const [journalState, setJournalState] = useState({ perpage: 20, page: 1, total: 0, search: '', entries:[] });
+  const stateReducer = (state, action) => {
+    switch (action.type) {
+      case "entries":
+        return {...state, originalEntries: action.entries, entries: action.entries };
+      case "search":
+        const results = state.originalEntries.filter((entry) => entry.details.toLocaleLowerCase().includes(action.search.toLocaleLowerCase()));
+        return {...state, entries: results, search: action.search };
+      case "page":
+        return {...state, page: action.page};
+      default:
+        return state;
+    }
+  };
+  const [state, updateState] = useReducer(stateReducer, { perpage: 20, page: 1, search: '', _entries:[] , entries:[] });
   const setSearch = (search) => {
-    const results = journalEntries.filter((entry) => entry.details.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
-    setJournalState({ ...journalState, search, entries: results, total: results.length });
+    updateState({type:'search', search: search});
   }
   const addJournalEntry = () => {
     navigate('/journal/add/');
   };
   const updateJournals = () => {
     Utils.Fetcher.get(`/api/journals/`).then((data) => {
-      setJournalState({ ...journalState, total: data.length, entries: data });
-      setJournalEntries(data);
+      updateState({type:'entries', entries: data});
     });
   };
   React.useEffect(() => {
     Utils.Fetcher.get(`/api/journals/`).then((data) => {
-      setJournalState({ ...journalState, total: data.length, entries: data });
-      setJournalEntries(data);
+      updateState({type:'entries', entries: data});
     });
   }, []);
   return (
     <main className='journal'>
       <aside className='journal_nav'>
-        {journalEntries === null ?
+        {state.entries === null ?
           <LoadingSpinner></LoadingSpinner>
           :
-          Object.entries(journalState.entries).map((entry, index) => {
-            if (index >= (journalState.page - 1) * journalState.perpage && index < journalState.page * journalState.perpage) {
+          Object.entries(state.entries).map((entry, index) => {
+            if (index >= (state.page - 1) * state.perpage && index < state.page * state.perpage) {
               return <JournalItem key={entry[1].journal_id} journalData={entry[1]}></JournalItem>
             } else {
               return null;
@@ -47,7 +56,7 @@ const Journal = () => {
           })
         }
       </aside>
-      <Pagination paging={journalState} setPaging={setJournalState}></Pagination>
+      <Pagination state={state} updateState={updateState}></Pagination>
       <aside className='journal_entry'>
         {journalId !== undefined ?
           <JournalEntry journalId={journalId} updateJournals={updateJournals}></JournalEntry>
@@ -56,11 +65,11 @@ const Journal = () => {
             <div className='search_journal_entry'>
               Search Journals: &nbsp;&nbsp;
               <Input
-                value={journalState.search}
+                value={state.search}
                 title="Type to search journal entries"
                 onChange={(e) => setSearch(e.target.value)}
               ></Input>
-              {journalState.search !== '' ?
+              {state.search !== '' ?
                 <img title="Clear search criteria for searching journals" onClick={() => { setSearch('') }} src='../images/close.svg'></img>
                 :
                 null

@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import './pagination.css';
-const Pagination = ({ paging, setPaging }) => {
+const Pagination = ({ state, updateState }) => {
     const [pages, setPages] = useState([]);
     const maxDisplayed = 5;
     const updatePage = (page) => {
-        setPaging({ ...paging, page: page });
+        updateState({ action:"page", page: page });
     }
     React.useEffect(() => {
-        let startPg = Math.max(paging.page - Math.floor(maxDisplayed / 2), 1);
+        let startPg = Math.max(state.page - Math.floor(maxDisplayed / 2), 1);
         let endPg = startPg + maxDisplayed - 1;
-        let maxEnd = Math.ceil(paging.total / paging.perpage);
+        let maxEnd = Math.ceil(state.entries.length / state.perpage);
         if (endPg > maxEnd) {
             startPg = (maxEnd-maxDisplayed+1>1)?maxEnd-maxDisplayed+1:1;
             endPg = maxEnd;
@@ -19,12 +19,12 @@ const Pagination = ({ paging, setPaging }) => {
             pges.push(i);
         };
         setPages(pges);
-    }, [paging]);
+    }, [state]);
     return (
         <nav className="pagination">
             {pages.map((p, i) =>
                 <div
-                    className={'page_item' + (p === paging.page ? ' page_item_selected' : '')}
+                    className={'page_item' + (p === state.page ? ' page_item_selected' : '')}
                     key={p}
                     onClick={() => { updatePage(p) }}
                 >
