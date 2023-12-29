@@ -13,13 +13,13 @@ const Pagination = ({ paging, setPaging }) => {
         if (endPg > maxEnd) {
             startPg = (maxEnd-maxDisplayed+1>1)?maxEnd-maxDisplayed+1:1;
             endPg = maxEnd;
-        }
+        };
         let pges = [];
         for (let i = startPg; i <= Math.ceil(endPg); i++) {
             pges.push(i);
-        }
+        };
         setPages(pges);
-    }, [paging.page, paging.total]);
+    }, [paging]);
     return (
         <nav className="pagination">
             {pages.map((p, i) =>
