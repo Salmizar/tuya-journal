@@ -4,7 +4,7 @@ const Pagination = ({ state, updateState }) => {
     const [pages, setPages] = useState([]);
     const maxDisplayed = 5;
     const updatePage = (page) => {
-        updateState({ action: "page", page: page });
+        updateState({ type: "page", page: page });
     }
     React.useEffect(() => {
         let startPg = Math.max(state.page - Math.floor(maxDisplayed / 2), 1);
