@@ -37,12 +37,17 @@ const ViewSensor = ({ setLastUpdate }) => {
   };
   return (
     <section className='view_sensor'>
-      <div className='view_sensor_date'>{(end_date)?Utils.Misc.formatDate(parseInt(end_date)):''}</div>
+      <div className='view_sensor_date'>{(end_date) ? Utils.Misc.formatDate(parseInt(end_date)) : ''}</div>
       <nav className='sensor_nav'>
         {sensors.map((sensor) => {
-          return <Button key={sensor} title={'Remove ' + Utils.Misc.formatProperSensorName(sensor) + ' Sensor'}
+          return <Button
+            key={sensor}
+            title={'Remove ' + Utils.Misc.formatProperSensorName(sensor) + ' Sensor'}
             onClick={() => { removeSensor(sensor); }}
-            theme={Utils.Theme.sensorColors[sensor]}>{Utils.Misc.formatProperSensorName(sensor)}</Button>
+            theme={Utils.Theme.sensorColors[sensor]}
+            >
+            {Utils.Misc.formatProperSensorName(sensor)}
+          </Button>
         })}
         <div className='add_sensor' style={{ display: sensors.length < sensorList.length ? 'inline-block' : 'none' }}>
           <button title="Add Sensor" className='add_icon'>-</button>

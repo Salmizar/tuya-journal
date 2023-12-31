@@ -62,8 +62,30 @@ aside button {
 }
 .sensor_chart {
     padding-top:20px;
+    position: relative;
+    left: 0px;
+    right: 0px;
+    width: calc( 100vw -  26px);
 }
 aside {
-    height: 500px;
+    height: 550px;
     text-align:center;
+}
+@media screen and (max-width: 500px)  {
+    .sensor_aside {
+        padding: 0px;
+        padding-top: 10px;
+    }
+    .sensor_chart {position: relative;
+    left: -20px;
+    right: -20px;
+    width: calc( 100vw + 60px);
+
+    }
+    .sensor_nav {
+        position: relative;
+        top: unset;
+        left: unset;
+        width: unset;
+    }
 }

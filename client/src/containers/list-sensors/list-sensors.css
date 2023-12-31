@@ -4,13 +4,14 @@
     top: -65px;
     font-size: 13px;
 }
-
+.last_updated::before {
+    content: "Last updated: ";
+}
 .selected_sensor {
     position: relative;
     display: inline-block;
     white-space: nowrap;
 }
-
 .select_sensor {
     display: none;
     position: absolute;
@@ -33,7 +34,14 @@
 .select_sensor .selected {
     background-color: #F0F0F0;
 }
-
 .selected_sensor:hover .select_sensor {
     display: block;
+}
+@media screen and (max-width: 500px)  {
+    .last_updated {
+        font-size: 11px;
+    }
+    .last_updated::before {
+    content: "Updated: ";
+}
 }

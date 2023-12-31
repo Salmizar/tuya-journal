@@ -49,7 +49,7 @@ const ListSensors = () => {
             })}
           </div>
         </div>
-        <div className="last_updated">Last updated: {!lastUpdate ? 'loading' : Utils.Misc.timeSince(lastUpdate)}</div>
+        <div className="last_updated">{!lastUpdate ? 'loading' : Utils.Misc.timeSince(lastUpdate)}</div>
       </nav>
       {activeSensor ?
         location.pathname.includes('/sensor/') ?
