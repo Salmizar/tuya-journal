@@ -25,10 +25,10 @@ If reset the device you will need to obtain a new device key from tuya-cli wizar
 
 [Docker Image:salmizar/tuya-journal](https://hub.docker.com/r/salmizar/tuya-journal)
 ```
-Interal port: 3000
+Internal port: 3000
 
 Necessary environment variables:
-NODE_ENV='production', PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE
+PORT=3000, NODE_ENV='production', PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE
 ```
 
 # Docker command helpers
