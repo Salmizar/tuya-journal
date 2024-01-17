@@ -16,6 +16,7 @@
     cursor: default;
 }
 .journal_title {
+    text-align: left;
     width: 80%;
     white-space: nowrap;
     overflow: hidden;

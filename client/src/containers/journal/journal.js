@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import './journal.css';
 import JournalItem from '../journal-item/journal-item';
 import JournalEntry from '../journal-entry/journal-entry';
@@ -8,15 +8,31 @@ import * as Utils from '../../utils';
 import { LoadingSpinner } from '../../components/loader/loader.style';
 import Pagination from '../../components/pagination/pagination';
 import { Input } from '../../components/input/input.style';
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+
 const Journal = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { journalId } = useParams();
+  const {
+    status: statusJournals,
+    data: journalEntries
+  } = useQuery({
+    queryKey: ["journals"],
+    queryFn: () => Utils.Fetcher.get(`/api/journals/`)
+  })
+  useEffect(() => {
+    if (journalEntries) {
+      updateState({ type: 'entries', entries: journalEntries });
+    }
+  }, [journalEntries]);
+
   const stateReducer = (state, action) => {
     switch (action.type) {
       case "entries":
-        return { ...state, originalEntries: action.entries, entries: action.entries };
+        return { ...state, entries: action.entries };
       case "search":
-        const results = state.originalEntries.filter((entry) => entry.details.toLocaleLowerCase().includes(action.search.toLocaleLowerCase()));
+        const results = journalEntries.filter((entry) => entry.details.toLocaleLowerCase().includes(action.search.toLocaleLowerCase()));
         return { ...state, entries: results, search: action.search };
       case "page":
         return { ...state, page: action.page };
@@ -24,7 +40,7 @@ const Journal = () => {
         return state;
     }
   };
-  const [state, updateState] = useReducer(stateReducer, { perpage: 20, page: 1, search: '', _entries: [], entries: [] });
+  const [state, updateState] = useReducer(stateReducer, { perpage: 20, page: 1, search: '', entries: [] });
   const setSearch = (search) => {
     updateState({ type: 'search', search: search });
   }
@@ -32,17 +48,15 @@ const Journal = () => {
     navigate('/journal/add/');
   };
   const updateJournals = () => {
-    Utils.Fetcher.get(`/api/journals/`).then((data) => {
-      updateState({ type: 'entries', entries: data });
-    });
+    queryClient.invalidateQueries({
+      queryKey: ['journals'],
+      refetchType: 'all'
+     });
   };
-  React.useEffect(() => {
-    updateJournals();
-  }, []);
   return (
     <main className='journal'>
       <aside className='journal_nav'>
-        {state.entries === null ?
+        {!journalEntries ?
           <LoadingSpinner></LoadingSpinner>
           :
           Object.entries(state.entries).map((entry, index) => {
