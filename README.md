@@ -7,7 +7,7 @@ context to journal entries. See requirements folder for details.
 # Build with
 
 ```
-Frontend: React, TailwindCSS, ReCharts.
+Frontend: React, React-Query, TailwindCSS, ReCharts.
 Backend: Node/Express, PostgreSQL, TuyAPI, RESTful API.
 
 Recommend running with pm2.
